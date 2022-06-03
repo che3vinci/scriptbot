@@ -1,0 +1,9 @@
+#!/usr/bin/env zx
+import 'zx/globals';
+import { resolve } from 'path';
+
+const name = argv._[1] || '';
+const cmd = resolve(name);
+const dest = argv._[2] || name.replace(/\.mjs|\.ts/, '');
+await $`chmod a+x ${cmd}`;
+await $`cp ${cmd} ~/bin/${dest}`;

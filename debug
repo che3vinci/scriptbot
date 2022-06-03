@@ -1,0 +1,32 @@
+#!/usr/bin/env zx
+
+import { $, fs } from 'zx';
+import { getProjectDir, Json, run } from '@c3/cli';
+
+const PORT = 9999;
+const workspaceFolder = 'workspaceFolder';
+const vscodeLaunchJSon = `{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-chrome",
+      "request": "attach",
+      "name": "findora",
+      "webRoot": "${workspaceFolder}",
+      "port": ${PORT}
+    }
+  ]
+}
+`;
+
+const project = getProjectDir();
+
+run({
+  async attach2Chrome() {
+    await $`echo ${vscodeLaunchJSon} > ${project}/.vscode/launch.json`;
+    await $`"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"  --remote-debugging-port=${PORT}`;
+    process.on('exit', () => {
+      console.log('exit');
+    });
+  },
+});
