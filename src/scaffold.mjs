@@ -1,4 +1,4 @@
-#!/usr/bin/env c3r
+#!/usr/bin/env zx
 import { os, $ } from 'zx';
 import { run, createProject, Json } from '@c3/cli';
 import { copyJsonField } from '@c3/cli';
@@ -12,15 +12,15 @@ run({
     await $`cp settings.json .vscode/settings.json`;
     await $`rm settings.json`;
   },
-  async typescript() {},
-  async git() {},
+  async typescript() { },
+  async git() { },
   async jest() {
     await $`yarn add --dev jest @types/jest ts-node ts-jest`;
     // await $`jest --init`;
     await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/jest.config.ts`;
   },
 
-  async babel() {},
+  async babel() { },
 
   async editorconfig() {
     await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/.editorconfig`;
@@ -72,4 +72,10 @@ run({
   async nextjs() {
     await $`npx create-next-app nextjs-blog --use-yarn --example "https://github.com/vercel/next-learn/tree/master/basics/learn-starter"`;
   },
+
+  async cypress() {
+    await $`yarn add cypress --dev`
+    // await $`npx cypress install`;
+    // await $`npx cypress init`;
+  }
 });

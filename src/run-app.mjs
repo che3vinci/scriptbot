@@ -1,4 +1,4 @@
-#!/usr/bin/env c3r
+#!/usr/bin/env zx
 import { os, $ } from 'zx';
 import { run, createProject, Json } from '@c3/cli';
 import { copyJsonField } from '@c3/cli';

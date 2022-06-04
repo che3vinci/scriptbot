@@ -1,0 +1,13 @@
+{
+  "name": "bin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:che3vinci/boost.git",
+  "author": "jinbo.wang <che3vinci@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "vite": "^2.9.9",
+    "vite-node": "^0.13.1",
+    "zx": "6.1.0"
+  }
+}
