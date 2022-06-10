@@ -1,10 +1,10 @@
 #!/usr/bin/env zx
-import { os, $ } from 'zx';
+import { os, $, cd } from 'zx';
 import { run, createProject, Json } from '@c3/cli';
 import { copyJsonField } from '@c3/cli';
 
 run({
-  createProject: async para => {
+  async createProject(para) {
     await createProject(para);
   },
   async vscode() {
@@ -14,13 +14,35 @@ run({
   },
   async typescript() { },
   async git() { },
-  async jest() {
-    await $`yarn add --dev jest @types/jest ts-node ts-jest`;
-    // await $`jest --init`;
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/jest.config.ts`;
+  async jest(options) {
+    const { usingInit = false } = options || {};
+    await $`yarn add --dev jest babel-jest @babel/preset-typescript @types/jest`;
+    await $`yarn add jest-environment-jsdom`;
+    if (usingInit) {
+      await $`jest --init`;
+    } else {
+    }
+  },
+  async preactDebug() {
+    await this.createProject({ projectName: 'preact-test-1' })
+    await this.babel()
+    await this.jest()
+    new Json('./package.json')
+      .set('jest.transformIgnorePatterns', [])
+      .set('jest.testEnvironment', 'jsdom');
+    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/babel.config.js`
+    await $`yarn add preact`;
+    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/demo.test.js`
+    await $`mkdir test && mv demo.test.js test/demo.test.js`;
+
+    await $`jest`
+
   },
 
-  async babel() { },
+  async babel() {
+    const pkgs = ['@babel/core', '@babel/preset-env', '@babel/plugin-transform-react-jsx']
+    await $`yarn add --dev ${pkgs} `;
+  },
 
   async editorconfig() {
     await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/.editorconfig`;

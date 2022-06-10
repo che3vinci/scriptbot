@@ -12,7 +12,7 @@ const vscodeLaunchJSon = `{
       "type": "pwa-chrome",
       "request": "attach",
       "name": "findora",
-      "webRoot": "${workspaceFolder}",
+      "webRoot": "\${workspaceFolder}",
       "port": ${PORT}
     }
   ]
@@ -29,16 +29,49 @@ run({
     await $`killall "Google\ Chrome"`;
     await $`${chrome}  --remote-debugging-port=${PORT}`;
   },
+
   async node(options) {
-    const { program, args } = options;
+    const { program, args } = options || {};
     assert(
       !!program,
       'Please input program name to be debugged.such as  --program vite --args build'
     );
     console.warn(
-      'attach to this node process in vscode.("Debug:Attach to Node process")'
+      'nextStep:attach to this node process in vscode.("Debug:Attach to Node process")'
     );
     const _program = await which(program);
     await $`/usr/bin/env node --inspect-brk ${_program} ${args || ''}`;
   },
+
+  /**
+   * support source map discovery
+   * @param options {program, args}
+   */
+  async jest(options) {
+    const vscodeLaunchJSon = `{
+      "version": "0.2.0",
+    "configurations": [
+    {
+      "name": "Debug Jest Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "\${workspaceRoot}/node_modules/.bin/jest",
+        "--runInBand"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "resolveSourceMapLocations":[
+          "\${workspaceFolder}/**",
+          "**/node_modules/**"
+      ]
+    }]
+    }
+    
+    `
+    await $`echo ${vscodeLaunchJSon} > ${project}/.vscode/launch.json`;
+
+    console.log('===>@next: set breakpoint and  run this configure file in vscode');
+  }
 });
