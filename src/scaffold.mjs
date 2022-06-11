@@ -24,23 +24,26 @@ run({
     }
   },
   async preactDebug() {
-    await this.createProject({ projectName: 'preact-test-1' })
-    await this.babel()
-    await this.jest()
+    await this.createProject({ projectName: 'preact-test-1' });
+    await this.babel();
+    await this.jest();
     new Json('./package.json')
       .set('jest.transformIgnorePatterns', [])
       .set('jest.testEnvironment', 'jsdom');
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/babel.config.js`
+    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/babel.config.js`;
     await $`yarn add preact`;
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/demo.test.js`
+    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/demo.test.js`;
     await $`mkdir test && mv demo.test.js test/demo.test.js`;
 
-    await $`jest`
-
+    await $`jest`;
   },
 
   async babel() {
-    const pkgs = ['@babel/core', '@babel/preset-env', '@babel/plugin-transform-react-jsx']
+    const pkgs = [
+      '@babel/core',
+      '@babel/preset-env',
+      '@babel/plugin-transform-react-jsx',
+    ];
     await $`yarn add --dev ${pkgs} `;
   },
 
@@ -96,8 +99,39 @@ run({
   },
 
   async cypress() {
-    await $`yarn add cypress --dev`
+    await $`yarn add cypress --dev`;
     // await $`npx cypress install`;
     // await $`npx cypress init`;
+  },
+  async pnpm(options) {
+    const { monorepo = true, demo = true } = options || {};
+    if (demo) {
+      await this.createProject({ projectName: 'pnpm-test-2', type: 'bone' });
+      new Json('./package.json').set('engines', {
+        "node": ">=10",
+        "pnpm": ">=3"
+      });
+      if (monorepo) {
+        await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/pnpm/pnpm-workspace.yaml`;
+        await $`mkdir packages`
+        await cd('packages');
+        await $`mkdir utils && mkdir client`
+        await cd('utils')
+        await $`pnpm init && echo 'const add = (a, b) => a + b; module.exports ={add}' > index.js`
+        await cd('../client')
+        await $`pnpm init  && echo 'const {add} =require("utils");
+        console.log(add(1,3))' > index.js`
+        new Json('./package.json').set('dependencies', { 'utils': "workspace:^" });
+        await $`pnpm install`;
+        await $`node index.js`
+
+        //for changesets
+        await cd('../../')
+        await $`pnpm add -Dw @changesets/cli`;
+        await $`pnpm changeset init`;
+        await $`pnpm changeset add`;
+      }
+    }
+
   }
 });

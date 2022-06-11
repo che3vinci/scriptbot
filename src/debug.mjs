@@ -4,7 +4,6 @@ import { getProjectDir, Json, run } from '@c3/cli';
 import { assert } from 'console';
 
 const PORT = 9999;
-const workspaceFolder = 'workspaceFolder';
 const vscodeLaunchJSon = `{
   "version": "0.2.0",
   "configurations": [
