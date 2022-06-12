@@ -6,8 +6,19 @@
   "author": "jinbo.wang <che3vinci@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "vite": "^2.9.9",
+    "@c3/cli": "^1.0.98",
+    "vite": "^2.9.12",
     "vite-node": "^0.13.1",
     "zx": "6.1.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "eslint": "^8.17.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-react-hooks": "^4.5.0",
+    "prettier": "^2.6.2"
   }
 }
