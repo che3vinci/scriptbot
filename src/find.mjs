@@ -3,10 +3,11 @@
 import { run } from '@c3/cli';
 import { os } from 'zx';
 import inquirer from 'inquirer';
+import { startSpinner } from 'zx/experimental';
 
 run({
   //open with code
-  async code(options) {
+  async open(options) {
     const home = os.home;
     $.verbose = false;
     const {
@@ -29,5 +30,34 @@ run({
       .then(answers => {
         $`code ${answers.file}`;
       });
+  },
+  async rm(options) {
+    $.verbose = false;
+    const { cmd } = options;
+    const { stdout } = await $`${cmd}`;
+    const list = await inquirer.prompt([
+      {
+        type: 'checkbox',
+        name: 'files',
+        message: 'What do you want to remove?',
+        choices: stdout.split('\n'),
+      },
+    ]);
+    const confirm = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'confirm',
+        message: `are you sure want to delete this files?`,
+        choices: ['yes', 'no'],
+      },
+    ]);
+    if (confirm['confirm'] === 'yes') {
+      $.verbose = true;
+      let stop = startSpinner();
+      for (let res of list['files']) {
+        await $`rm -rf ${res}`;
+      }
+      stop();
+    }
   },
 });

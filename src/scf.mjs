@@ -70,15 +70,15 @@ run({
     if (demo) {
       await this.createProject({
         projectName: 'storybook-test-1',
-        type: 'viteTs',
+        type: 'cra',
         npm: npm,
       });
     }
     await $`echo 'shamefully-hoist=true' >> .npmrc`;
     await $`echo 'auto-install-peers=true' >> .npmrc`;
-    await $`${npm} add @storybook/builder-vite --save-dev`;
+    // await $`${npm} add @storybook/builder-vite --save-dev`;
 
-    // await $`${getNpx(npm)} storybook init`;
+    await $`${getNpx(npm)} storybook init`;
     // const pkgs = ['sb@next', '@storybook/addon-docs'];
     // await $`pnpm install ${pkgs} --save-dev`;
     await $`${getNpx(npm)} sb init --builder @storybook/builder-vite`;
