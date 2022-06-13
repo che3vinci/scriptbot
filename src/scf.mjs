@@ -65,7 +65,7 @@ run({
     await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/.prettierrc`;
   },
   async storybook(options) {
-    const { demo = true, npm = pnpm } = options;
+    const { demo = true, npm = 'pnpm' } = options;
 
     if (demo) {
       await this.createProject({

@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "@c3/cli": "^1.0.98",
+    "inquirer": "^8.2.4",
     "vite": "^2.9.12",
     "vite-node": "^0.13.1",
     "zx": "6.1.0"
