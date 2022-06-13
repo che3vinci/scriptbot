@@ -22,20 +22,7 @@ run({
     } else {
     }
   },
-  async preactDebug() {
-    await this.createProject({ projectName: 'preact-test-1' });
-    await this.babel();
-    await this.jest();
-    new Json('./package.json')
-      .set('jest.transformIgnorePatterns', [])
-      .set('jest.testEnvironment', 'jsdom');
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/babel.config.js`;
-    await $`pnpm add preact`;
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/demo.test.js`;
-    await $`mkdir test && mv demo.test.js test/demo.test.js`;
 
-    await $`jest`;
-  },
 
   async babel() {
     const pkgs = [

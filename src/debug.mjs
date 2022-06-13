@@ -1,6 +1,6 @@
 #!/usr/bin/env zx
 import { $, fs, which } from 'zx';
-import { getProjectDir, Json, run } from '@c3/cli';
+import { createProject, getProjectDir, Json, run } from '@c3/cli';
 import { assert } from 'console';
 
 const PORT = 9999;
@@ -68,9 +68,31 @@ run({
     }]
     }
     
-    `
+    `;
     await $`echo ${vscodeLaunchJSon} > ${project}/.vscode/launch.json`;
 
-    console.log('===>@next: set breakpoint and  run this configure file in vscode');
+    console.log(
+      '===>@next: set breakpoint and  run this configure file in vscode'
+    );
+  },
+  async preact() {
+    await createProject({ projectName: 'preact-test-1' });
+    await $`scf babel`;
+    await $`scf jest`;
+    new Json('./package.json')
+      .set('jest.transformIgnorePatterns', [])
+      .set('jest.testEnvironment', 'jsdom');
+    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/babel.config.js`;
+    await $`pnpm add preact`;
+    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/demo.test.js`;
+    await $`mkdir test && mv demo.test.js test/demo.test.js`;
+
+    await $`jest`;
+  },
+  async stitches(){
+//    await createProject({ projectName: 'stitches-test-1' });
+      //@first: make debugger auto attach to process
+      await $`yarn test`
+
   }
 });
