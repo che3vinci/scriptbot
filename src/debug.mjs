@@ -82,9 +82,9 @@ run({
     new Json('./package.json')
       .set('jest.transformIgnorePatterns', [])
       .set('jest.testEnvironment', 'jsdom');
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/babel.config.js`;
+    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/babel.config.js`;
     await $`pnpm add preact`;
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/demo.test.js`;
+    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/preact/demo.test.js`;
     await $`mkdir test && mv demo.test.js test/demo.test.js`;
 
     await $`jest`;

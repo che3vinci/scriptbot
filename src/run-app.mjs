@@ -11,9 +11,9 @@ run({
       await $`rm ${files}`;
     });
     await $`rm -rf ${files}`;
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/react-vite/index.html`;
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/react-vite/index.tsx`;
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/react-vite/vite.config.ts`;
+    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/react-vite/index.html`;
+    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/react-vite/index.tsx`;
+    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/react-vite/vite.config.ts`;
     replaceTextInFile('./index.tsx', /App/g, file);
     await $`vite --open`;
   },

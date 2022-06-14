@@ -8,19 +8,24 @@ run({
     await createProject(para);
   },
   async vscode() {
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/vscode/settings.json`;
+    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/vscode/settings.json`;
     await $`mv settings.json .vscode/settings.json`;
   },
   async typescript() {},
   async git() {},
+
+  /**
+   * support wallaby
+   * @param {*} options
+   */
   async jest(options) {
-    const { usingInit = false } = options || {};
+    const {} = options || {};
     await $`pnpm add --save-dev jest babel-jest @babel/preset-typescript @types/jest`;
     await $`pnpm add jest-environment-jsdom`;
-    if (usingInit) {
-      await $`jest --init`;
-    } else {
-    }
+
+    await $`mkdir test`;
+    await $`wget -q https://raw.githubusercontent.com/che3vinci/automation/master/templates/jest/add.test.ts && mv add.test.ts test`;
+    await $`jest`;
   },
 
   async babel() {
@@ -33,16 +38,16 @@ run({
   },
 
   async editorconfig() {
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/.editorconfig`;
+    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/.editorconfig`;
     await $`pnpm add  --save-dev eslint-config-prettier`;
   },
   async commitlint() {
     await $`pnpm global add @commitlint/cli @commitlint/config-conventional`;
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/.husky/commit-msg`;
+    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/.husky/commit-msg`;
     await $`cp commit-msg .husky/`;
     await $`chmod a+x .husky/commit-msg`;
     await $`rm commit-msg`;
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/commitlint.config.js`;
+    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/commitlint.config.js`;
   },
   async eslint(option) {
     const { npm = 'pnpm' } = option;
@@ -57,11 +62,11 @@ run({
     ];
     $.quote = e => e;
     await $`${npm} add ${pkgs} --save-dev`;
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/.eslintrc.js`;
+    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/.eslintrc.js`;
   },
   async prettier() {
     await $`pnpm add --save-dev  prettier`;
-    await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/.prettierrc`;
+    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/.prettierrc`;
   },
   async storybook(options) {
     const { demo = true, npm = 'pnpm' } = options;
@@ -80,7 +85,7 @@ run({
       await $`echo 'shamefully-hoist=true' >> .npmrc`;
       await $`echo 'auto-install-peers=true' >> .npmrc`;
     }
-    await $`${getNpx(npm)} storybook init`;    
+    await $`${getNpx(npm)} storybook init`;
     await $`${npm} storybook`;
   },
   async husky() {
@@ -119,7 +124,7 @@ run({
         pnpm: '>=3',
       });
       if (monorepo) {
-        await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/pnpm/pnpm-workspace.yaml`;
+        await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/pnpm/pnpm-workspace.yaml`;
         await $`mkdir packages`;
         await cd('packages');
         await $`mkdir utils && mkdir client`;
