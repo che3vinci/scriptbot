@@ -11,8 +11,8 @@ run({
     await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/templates/vscode/settings.json`;
     await $`mv settings.json .vscode/settings.json`;
   },
-  async typescript() { },
-  async git() { },
+  async typescript() {},
+  async git() {},
   async jest(options) {
     const { usingInit = false } = options || {};
     await $`pnpm add --save-dev jest babel-jest @babel/preset-typescript @types/jest`;
@@ -22,7 +22,6 @@ run({
     } else {
     }
   },
-
 
   async babel() {
     const pkgs = [
@@ -46,7 +45,7 @@ run({
     await $`wget https://raw.githubusercontent.com/che3vinci/react-template/master/commitlint.config.js`;
   },
   async eslint(option) {
-    const { npm = 'pnpm' } = option
+    const { npm = 'pnpm' } = option;
     const pkgs = [
       'eslint',
       '@typescript-eslint/parser',
@@ -70,20 +69,19 @@ run({
     if (demo) {
       await this.createProject({
         projectName: 'storybook-test-1',
-        type: 'cra',
+        type: 'viteTs',
         npm: npm,
+        before: async () => {
+          await $`echo 'shamefully-hoist=true' >> .npmrc`;
+          await $`echo 'auto-install-peers=true' >> .npmrc`;
+        },
       });
+    } else {
+      await $`echo 'shamefully-hoist=true' >> .npmrc`;
+      await $`echo 'auto-install-peers=true' >> .npmrc`;
     }
-    await $`echo 'shamefully-hoist=true' >> .npmrc`;
-    await $`echo 'auto-install-peers=true' >> .npmrc`;
-    // await $`${npm} add @storybook/builder-vite --save-dev`;
-
-    await $`${getNpx(npm)} storybook init`;
-    // const pkgs = ['sb@next', '@storybook/addon-docs'];
-    // await $`pnpm install ${pkgs} --save-dev`;
-    await $`${getNpx(npm)} sb init --builder @storybook/builder-vite`;
-    //TODO:
-    //delete  "@storybook/addon-interactions" in .story/main.js file,
+    await $`${getNpx(npm)} storybook init`;    
+    await $`${npm} storybook`;
   },
   async husky() {
     await $`pnpm add organize-imports-cli`;

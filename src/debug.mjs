@@ -92,7 +92,7 @@ run({
   async stitches(){
 //    await createProject({ projectName: 'stitches-test-1' });
       //@first: make debugger auto attach to process
-      await $`yarn test`
+      await $`yarn test `
 
   }
 });
