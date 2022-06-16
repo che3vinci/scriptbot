@@ -1,15 +1,17 @@
 #!/usr/bin/env zx
 import { os, $, cd } from 'zx';
-import { run, createProject, Json, getNpx } from '@c3/cli';
-import { copyJsonField } from '@c3/cli';
+import { run, createProject, Json, getNpx, getProjectDir } from '@c3/cli';
+import path from 'path';
 
 run({
   async createProject(para) {
     await createProject(para);
   },
   async vscode() {
-    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/vscode/settings.json`;
-    await $`mv settings.json .vscode/settings.json`;
+    await $`cp ${path.resolve(
+      __dirname,
+      '../templates/vscode/settings.json'
+    )} ${getProjectDir()}/.vscode/settings.json`;
   },
   async typescript() {},
   async git() {},
