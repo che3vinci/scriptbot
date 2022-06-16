@@ -21,12 +21,52 @@ run({
    * @param {*} options
    */
   async jest(options) {
-    const {} = options || {};
-    await $`pnpm add --save-dev jest babel-jest @babel/preset-typescript @types/jest`;
-    await $`pnpm add jest-environment-jsdom`;
+    const { react } = options || {};
+    const pkgs = [
+      'jest',
+      'babel-jest',
+      '@babel/preset-env',
+      '@babel/preset-typescript',
+      'jest-environment-jsdom',
+      '@types/jest',
+      'lodash',
+      '@types/lodash',
+    ];
+    await $`pnpm add --save-dev ${pkgs}`;
+    new Json('package.json')
+      .set('jest', {
+        transformIgnorePatterns: [],
+        testEnvironment: 'jsdom',
+      })
+      .set('babel', {
+        presets: [
+          ['@babel/preset-env', { targets: { node: 'current' } }],
+          '@babel/preset-typescript',
+        ],
+      });
 
-    await $`mkdir test`;
-    await $`wget -q https://raw.githubusercontent.com/che3vinci/automation/master/templates/jest/add.test.ts && mv add.test.ts test`;
+    await $`rm -rf test && mkdir test`;
+    await $`cp ${path.resolve(
+      __dirname,
+      '../templates/jest/add.test.ts'
+    )} test/ `;
+
+    if (react) {
+      const pkgs = [
+        '@babel/preset-react', // transform jsx syntax to react.createElement
+        'react',
+        'react-dom',
+        '@types/react',
+        '@types/react-dom',
+      ];
+      await $`pnpm add --save-dev ${pkgs}`;
+      new Json('package.json').append('babel.presets', '@babel/preset-react');
+      await $`cp ${path.resolve(
+        __dirname,
+        '../templates/jest/dog.test.tsx'
+      )} test/ `;
+    }
+
     await $`jest`;
   },
 
