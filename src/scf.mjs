@@ -29,9 +29,7 @@ run({
       '@babel/preset-typescript',
       'jest-environment-jsdom',
       '@types/jest',
-      'lodash',
-      '@types/lodash',
-    ];
+    ].concat(['lodash', '@types/lodash']);
     await $`pnpm add --save-dev ${pkgs}`;
     new Json('package.json')
       .set('jest', {
@@ -58,12 +56,16 @@ run({
         'react-dom',
         '@types/react',
         '@types/react-dom',
-      ];
+      ].concat(['@testing-library/react', '@testing-library/jest-dom']);
       await $`pnpm add --save-dev ${pkgs}`;
       new Json('package.json').append('babel.presets', '@babel/preset-react');
       await $`cp ${path.resolve(
         __dirname,
-        '../templates/jest/dog.test.tsx'
+        '../templates/jest/Counter.test.tsx'
+      )} test/ `;
+      await $`cp ${path.resolve(
+        __dirname,
+        '../templates/jest/Counter.tsx'
       )} test/ `;
     }
 
@@ -158,13 +160,14 @@ run({
     // await $`npx cypress init`;
   },
   async pnpm(options) {
-    const { monorepo = true, demo = true } = options || {};
-    if (demo) {
+    const { monorepo = true, create } = options || {};
+    new Json('./package.json').set('engines', {
+      node: '>=10',
+      pnpm: '>=3',
+    });
+    if (create) {
       await this.createProject({ projectName: 'pnpm-test-2', type: 'bone' });
-      new Json('./package.json').set('engines', {
-        node: '>=10',
-        pnpm: '>=3',
-      });
+
       if (monorepo) {
         await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/pnpm/pnpm-workspace.yaml`;
         await $`mkdir packages`;
@@ -184,6 +187,8 @@ run({
         await this.changeset();
       }
     }
+    if (monorepo) {
+    }
   },
   async changeset() {
     await cd('../../');
@@ -197,5 +202,14 @@ run({
     await $`lerna init --independent`;
     await $`lerna create @bullmind/colors --es-module -y`;
     await $`lerna create @bullmind/cli --es-module -y`;
+  },
+  async playwright(option) {
+    const { install, create } = option;
+    if (create) {
+      this.createProject({ projectName: 'playwright-test-1', type: 'bone' });
+    }
+    if (install) {
+      await $`pnpm add  @playwright/test`;
+    }
   },
 });

@@ -1,6 +1,6 @@
 #!/usr/bin/env zx
 import { $, fs, which } from 'zx';
-import { createProject, getProjectDir, Json, run } from '@c3/cli';
+import { createProject, getProjectDir, Json, run, chromeApp } from '@c3/cli';
 import { assert } from 'console';
 
 const PORT = 9999;
@@ -22,11 +22,9 @@ const project = getProjectDir();
 
 run({
   async attach2Chrome() {
-    const chrome =
-      '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
     await $`echo ${vscodeLaunchJSon} > ${project}/.vscode/launch.json`;
     await $`killall "Google\ Chrome"`;
-    await $`${chrome}  --remote-debugging-port=${PORT}`;
+    await $`${chromeApp}  --remote-debugging-port=${PORT}`;
   },
 
   async node(options) {
@@ -41,6 +39,13 @@ run({
     const _program = await which(program);
     await $`/usr/bin/env node --inspect-brk ${_program} ${args || ''}`;
   },
+
+  // proxy mobiel to localhost
+  async mobile(option) {
+    await $`${chromeApp} https://share.getcloudapp.com/kpu8wWom`;
+  
+  },
+  async react() {},
 
   /**
    * support source map discovery
@@ -70,7 +75,6 @@ run({
     
     `;
     await $`echo ${vscodeLaunchJSon} > ${project}/.vscode/launch.json`;
-
     console.log(
       '===>@next: set breakpoint and  run this configure file in vscode'
     );
@@ -89,10 +93,9 @@ run({
 
     await $`jest`;
   },
-  async stitches(){
-//    await createProject({ projectName: 'stitches-test-1' });
-      //@first: make debugger auto attach to process
-      await $`yarn test `
-
-  }
+  async stitches() {
+    //    await createProject({ projectName: 'stitches-test-1' });
+    //@first: make debugger auto attach to process
+    await $`yarn test `;
+  },
 });
