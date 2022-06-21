@@ -2,15 +2,15 @@
 import { os, $, cd } from 'zx';
 import { run, createProject, Json, getNpx, getProjectDir } from '@c3/cli';
 import path from 'path';
+const template = file => path.resolve(__dirname, `../templates/${file}`);
 
 run({
   async createProject(para) {
     await createProject(para);
   },
   async vscode() {
-    await $`cp ${path.resolve(
-      __dirname,
-      '../templates/vscode/settings.json'
+    await $`cp ${template(
+      'vscode/settings.json'
     )} ${getProjectDir()}/.vscode/settings.json`;
   },
   async typescript() {},
@@ -44,10 +44,7 @@ run({
       });
 
     await $`rm -rf test && mkdir test`;
-    await $`cp ${path.resolve(
-      __dirname,
-      '../templates/jest/add.test.ts'
-    )} test/ `;
+    await $`cp ${template('jest/add.test.ts')} test/ `;
 
     if (react) {
       const pkgs = [
@@ -59,14 +56,8 @@ run({
       ].concat(['@testing-library/react', '@testing-library/jest-dom']);
       await $`pnpm add --save-dev ${pkgs}`;
       new Json('package.json').append('babel.presets', '@babel/preset-react');
-      await $`cp ${path.resolve(
-        __dirname,
-        '../templates/jest/Counter.test.tsx'
-      )} test/ `;
-      await $`cp ${path.resolve(
-        __dirname,
-        '../templates/jest/Counter.tsx'
-      )} test/ `;
+      await $`cp ${template('jest/Counter.test.tsx')} test/ `;
+      await $`cp ${template('jest/Counter.tsx')} test/ `;
     }
 
     await $`jest`;
@@ -85,14 +76,7 @@ run({
     await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/.editorconfig`;
     await $`pnpm add  --save-dev eslint-config-prettier`;
   },
-  async commitlint() {
-    await $`pnpm global add @commitlint/cli @commitlint/config-conventional`;
-    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/.husky/commit-msg`;
-    await $`cp commit-msg .husky/`;
-    await $`chmod a+x .husky/commit-msg`;
-    await $`rm commit-msg`;
-    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/commitlint.config.js`;
-  },
+
   async eslint(option) {
     const { npm = 'pnpm' } = option;
     const pkgs = [
@@ -132,23 +116,54 @@ run({
     await $`${getNpx(npm)} storybook init`;
     await $`${npm} storybook`;
   },
-  async husky() {
-    await $`pnpm add organize-imports-cli`;
-    await $`npx mrm@2 lint-staged`;
-    new Json('./package.json').set('lint-stage', {
-      '*.{ts,tsx}': [
-        "bash -c 'tsc  --project . --noEmit'",
-        'organize-imports-cli',
-        'prettier --write',
-        'eslint --cache --fix',
-      ],
-      '*.{js,jsx}': [
-        'organize-imports-cli',
-        'prettier --write',
-        'eslint --cache --fix',
-      ],
-      '*.{css,md}': 'prettier --write',
-    });
+  async husky(option) {
+    const {
+      projectName ,
+      commitlint = true,
+      lintStage = true,
+      
+    } = option || {};
+    if (projectName ) {
+      await this.createProject({ projectName, type: 'bone' });
+      await $`git init`;
+      await $`echo node_modules/ > .gitignore`;
+    }
+    const pkgs = ['husky'];
+    await $`pnpm add ${pkgs} -D`;
+    await $`npm set-script prepare "husky install"`;
+    await $`pnpm npm run prepare`;
+
+    if (lintStage) {
+      const pkgs = ['lint-staged', 'organize-imports-cli'];
+
+      await $`pnpm add ${pkgs} -D`;
+      await $`pnpx husky add .husky/pre-commit "pnpm lint-staged"`;
+
+      new Json('./package.json').set('lint-stage', {
+        '*.{ts,tsx}': [
+          "bash -c 'tsc  --project . --noEmit'",
+          'organize-imports-cli',
+          'prettier --write',
+          'eslint --cache --fix',
+        ],
+        '*.{js,jsx}': [
+          'organize-imports-cli',
+          'prettier --write',
+          'eslint --cache --fix',
+        ],
+        '*.{css,md}': 'prettier --write',
+      });
+    }
+
+    if (commitlint) {
+      const pkgs = ['@commitlint/cli', '@commitlint/config-conventional'];
+      await $`pnpm  add ${pkgs}  -g`;
+      await $`echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js`;
+      await $`pnpx husky add .husky/commit-msg 'pnpx commitlint --edit $1'`;
+    }
+
+    //try
+    await $`git add  . && git commit -m "init"`;
   },
   async nextjs() {
     await $`npx create-next-app nextjs-blog --use-pnpm --example "https://github.com/vercel/next-learn/tree/master/basics/learn-starter"`;
@@ -211,5 +226,23 @@ run({
     if (install) {
       await $`pnpm add  @playwright/test`;
     }
+  },
+  async fuck(option) {
+    const { projectName } = option;
+    const path = os.homedir() + '/' + projectName;
+    await $`mkdir ${path}`;
+    await cd(path);
+
+    await $`git clone https://github.com/Overealityio/wormhole`;
+    await cd('wormhole');
+    await $`git pull`;
+    await $`git checkout zkbridge`;
+    await $`npm ci --prefix sdk/js`;
+    await $`npm ci --prefix bridge_ui`;
+    await $`npm install --prefix bridge_ui  ./sdk/js`;
+
+    await cd('bridge_ui');
+
+    await $`REACT_APP_CLUSTER=testnet  REACT_APP_COVALENT_API_KEY=ckey_b4c4f5e6010c434aad864430298 npm run start`;
   },
 });

@@ -4,6 +4,7 @@ specifiers:
   '@c3/cli': ^1.0.98
   '@typescript-eslint/eslint-plugin': ^5.27.1
   '@typescript-eslint/parser': ^5.27.1
+  corepack: ^0.11.2
   eslint: ^8.17.0
   eslint-plugin-import: ^2.26.0
   eslint-plugin-jsx-a11y: ^6.5.1
@@ -17,6 +18,7 @@ specifiers:
 
 dependencies:
   '@c3/cli': 1.0.98
+  corepack: 0.11.2
   inquirer: 8.2.4
   vite: 2.9.12
   vite-node: 0.13.1
@@ -490,6 +492,11 @@ packages:
     resolution: {integrity: sha512-bOxbZIy9S5n4OVH63XaLVXZ49QKicjowDx/UELyJ68vxfCRpYsbyh/WNZNfEfAk+ekA8vSjt+gCDpvh672bc3w==}
     requiresBuild: true
     dev: true
+
+  /corepack/0.11.2:
+    resolution: {integrity: sha512-4pxAXxfQgGEaZejp9nf6bYWYepPvcf5AniRC9ANgEBt7bbfcSxasApjYpiGZAyCmAClX6NuRJyIGeUSanVbqZA==}
+    hasBin: true
+    dev: false
 
   /cross-spawn/7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
