@@ -139,7 +139,7 @@ run({
       await $`pnpm add ${pkgs} -D`;
       await $`pnpx husky add .husky/pre-commit "pnpm lint-staged"`;
 
-      new Json('./package.json').set('lint-stage', {
+      new Json('./package.json').set('lint-staged', {
         '*.{ts,tsx}': [
           "bash -c 'tsc  --project . --noEmit'",
           'organize-imports-cli',
