@@ -78,7 +78,7 @@ run({
   },
 
   async eslint(option) {
-    const { npm = 'pnpm' } = option;
+    const { npm = 'pnpm' } = option || {};
     const pkgs = [
       'eslint',
       '@typescript-eslint/parser',
@@ -118,15 +118,18 @@ run({
   },
   async husky(option) {
     const {
-      projectName ,
+      projectName,
       commitlint = true,
       lintStage = true,
-      
+      prettier = false,
+      eslint = false,
     } = option || {};
-    if (projectName ) {
+    if (projectName) {
       await this.createProject({ projectName, type: 'bone' });
       await $`git init`;
       await $`echo node_modules/ > .gitignore`;
+      prettier && (await this.prettier());
+      eslint && (await this.eslint());
     }
     const pkgs = ['husky'];
     await $`pnpm add ${pkgs} -D`;
@@ -137,19 +140,19 @@ run({
       const pkgs = ['lint-staged', 'organize-imports-cli'];
 
       await $`pnpm add ${pkgs} -D`;
-      await $`pnpx husky add .husky/pre-commit "pnpm lint-staged"`;
+      await $`pnpx husky add .husky/pre-commit "lint-staged"`;
 
       new Json('./package.json').set('lint-staged', {
         '*.{ts,tsx}': [
           "bash -c 'tsc  --project . --noEmit'",
           'organize-imports-cli',
-          'prettier --write',
-          'eslint --cache --fix',
+          // prettier && 'prettier --write',
+          // eslint && 'eslint --cache --fix',
         ],
         '*.{js,jsx}': [
           'organize-imports-cli',
-          'prettier --write',
-          'eslint --cache --fix',
+          // prettier && 'prettier --write',
+          // eslint && 'eslint --cache --fix',
         ],
         '*.{css,md}': 'prettier --write',
       });
@@ -159,7 +162,7 @@ run({
       const pkgs = ['@commitlint/cli', '@commitlint/config-conventional'];
       await $`pnpm  add ${pkgs}  -g`;
       await $`echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js`;
-      await $`pnpx husky add .husky/commit-msg 'pnpx commitlint --edit $1'`;
+      await $`pnpx husky add .husky/commit-msg 'commitlint --edit $1'`;
     }
 
     //try

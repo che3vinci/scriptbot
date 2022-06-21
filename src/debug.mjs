@@ -38,6 +38,8 @@ run({
     );
     const _program = await which(program);
     await $`/usr/bin/env node --inspect-brk ${_program} ${args || ''}`;
+    
+    console.log('go to chrome,input chrome://inspect and click the "inpsect" text button for remote target');
   },
 
   // proxy mobiel to localhost
