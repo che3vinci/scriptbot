@@ -12,7 +12,11 @@ const vscodeLaunchJSon = `{
       "request": "attach",
       "name": "findora",
       "webRoot": "\${workspaceFolder}",
-      "port": ${PORT}
+      "port": ${PORT},
+      "resolveSourceMapLocations":[
+          "\${workspaceFolder}/**",
+          "**/node_modules/**"
+      ]
     }
   ]
 }
@@ -33,19 +37,20 @@ run({
       !!program,
       'Please input program name to be debugged.such as  --program vite --args build'
     );
-    console.warn(
-      'nextStep:attach to this node process in vscode.("Debug:Attach to Node process")'
-    );
-    const _program = await which(program);
+
+    let _program = program;
+    try {
+      _program = await which(program);
+    } catch (e) {}
     await $`/usr/bin/env node --inspect-brk ${_program} ${args || ''}`;
-    
-    console.log('go to chrome,input chrome://inspect and click the "inpsect" text button for remote target');
+    console.warn(
+      'nextStep:attach to this node process in vscode.("Debug:Attach to Node process") and select the process'
+    );
   },
 
   // proxy mobiel to localhost
   async mobile(option) {
     await $`${chromeApp} https://share.getcloudapp.com/kpu8wWom`;
-  
   },
   async react() {},
 

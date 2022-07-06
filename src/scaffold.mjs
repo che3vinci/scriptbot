@@ -222,12 +222,18 @@ run({
     await $`lerna create @bullmind/cli --es-module -y`;
   },
   async playwright(option) {
-    const { install, create } = option;
+    const { install, create, suportComponentTest = true } = option;
     if (create) {
-      this.createProject({ projectName: 'playwright-test-1', type: 'bone' });
+      await this.createProject({
+        projectName: 'playwright-test-1',
+        npm: 'npm',
+      });
     }
     if (install) {
-      await $`pnpm add  @playwright/test`;
+      await $`npm add  @playwright/test`;
+    }
+    if (suportComponentTest) {
+      await $`npm init playwright@latest -- --ct`;
     }
   },
   async fuck(option) {
@@ -247,5 +253,10 @@ run({
     await cd('bridge_ui');
 
     await $`REACT_APP_CLUSTER=testnet  REACT_APP_COVALENT_API_KEY=ckey_b4c4f5e6010c434aad864430298 npm run start`;
+  },
+  async test(option) {
+    const { process, meta } = option;
+    process && console.log(process.env);
+    meta && console.log(import.meta);
   },
 });

@@ -1,7 +1,8 @@
 #!/usr/bin/env zx
 import { run, replaceTextInFile } from '@c3/cli';
 import { $ } from 'zx';
-// replaceTextInFile('./index.tsx', 'App', 'xxx');
+const template = file => path.resolve(__dirname, `../templates/${file}`);
+const viteTemplate = file => template(`react-vite/${file}/`);
 
 run({
   async react(options) {
@@ -11,9 +12,9 @@ run({
       await $`rm ${files}`;
     });
     await $`rm -rf ${files}`;
-    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/react-vite/index.html`;
-    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/react-vite/index.tsx`;
-    await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/react-vite/vite.config.ts`;
+    for(const f of files){
+      await $`cp ${viteTemplate(f)} ${f}`;
+    }
     replaceTextInFile('./index.tsx', /App/g, file);
     await $`vite --open`;
   },
