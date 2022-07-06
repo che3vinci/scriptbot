@@ -1,5 +1,4 @@
 #!/usr/bin/env zx
-import 'zx/globals';
 import { resolve } from 'path';
 import { getProjectDir } from '@auto-scripts/cli';
 

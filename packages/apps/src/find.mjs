@@ -2,7 +2,7 @@
 
 import { run } from '@auto-scripts/cli';
 import inquirer from 'inquirer';
-import { startSpinner } from 'zx/experimental';
+import { spinner } from 'zx/experimental';
 
 run({
   //open with code
@@ -52,7 +52,7 @@ run({
     ]);
     if (confirm['confirm'] === 'yes') {
       $.verbose = true;
-      let stop = startSpinner();
+      let stop = spinner();
       for (let res of list['files']) {
         await $`rm -rf ${res}`;
       }
