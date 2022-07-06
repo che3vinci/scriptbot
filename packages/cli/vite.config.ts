@@ -1,4 +1,5 @@
 import commonjs from '@rollup/plugin-commonjs';
+import rollupTypescript from '@rollup/plugin-typescript';
 import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
@@ -14,5 +15,5 @@ export default defineConfig({
       external: [/node:*/, 'fs', 'path', 'zx', 'lodash', '@c3/utils', 'tslib'],
     },
   },
-  plugins: [commonjs()],
+  plugins: [commonjs(), rollupTypescript()],
 });

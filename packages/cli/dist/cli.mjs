@@ -51,13 +51,7 @@ const projects = {
 };
 const createProject = async (option) => {
   $.quote = (e) => e;
-  const {
-    projectName = "my-app",
-    baseDir = "/tmp",
-    type = "viteTs",
-    npm = "pnpm",
-    before
-  } = option || {};
+  const { projectName = "my-app", baseDir = "/tmp", type = "viteTs", npm = "pnpm", before } = option || {};
   const projectDir = `${baseDir}/${projectName}`;
   await cd(baseDir);
   await $`rm -rf ${projectName}`;

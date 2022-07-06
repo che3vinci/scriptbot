@@ -1,8 +1,6 @@
 import utils from '@c3/utils';
 import { argv } from 'zx';
-// import { assert, omit } from '@c3/utils';
 const { assert, omit } = utils;
-
 export type IRunOption = {
   [param: string]: <T>(value: T) => Promise<void> | void;
 };

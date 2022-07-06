@@ -25,7 +25,7 @@
     "scripts": {
         "test": "jest --config ../../jest.config.ts --rootDir .",
         "type": "tsc --project . --paths null --emitDeclarationOnly --declaration",
-        "build": "vite build && pnpm type  ",
+        "build": "rm -rf dist/ && vite build && pnpm type  ",
         "clean": "rm -rf dist && rm -rf node_modules ",
         "reset": "pnpm clean && pnpm install"
     },

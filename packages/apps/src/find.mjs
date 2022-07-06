@@ -1,4 +1,3 @@
-#!/usr/bin/env zx
 
 import { run } from '@auto-scripts/cli';
 import inquirer from 'inquirer';

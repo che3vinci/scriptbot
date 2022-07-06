@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { parse } from 'path';
 import { $, fs } from 'zx';
 const { isPlainObject, isArray, toArray } = utils;
-
 export class Json {
   private _data: object;
   private _file: string;

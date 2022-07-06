@@ -6,10 +6,15 @@
     "author": "jinbo.wang <che3vinci@gmail.com>",
     "license": "MIT",
     "devDependencies": {
+        "@rollup/plugin-commonjs": "^22.0.1",
+        "@rollup/plugin-typescript": "^8.3.3",
         "prettier": "^2.6.2"
     },
     "engines": {
         "node": ">=10",
         "pnpm": ">=3"
+    },
+    "dependencies": {
+        "vite": "^2.9.13"
     }
 }
