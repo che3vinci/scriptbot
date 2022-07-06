@@ -1,26 +1,15 @@
 {
-  "name": "bin",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:che3vinci/boost.git",
-  "author": "jinbo.wang <che3vinci@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "@c3/cli": "^1.0.98",
-    "corepack": "^0.11.2",
-    "inquirer": "^8.2.4",
-    "vite": "^2.9.12",
-    "vite-node": "^0.13.1",
-    "zx": "6.1.0"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.27.1",
-    "@typescript-eslint/parser": "^5.27.1",
-    "eslint": "^8.17.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.30.0",
-    "eslint-plugin-react-hooks": "^4.5.0",
-    "prettier": "^2.6.2"
-  }
+    "name": "root",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "git@github.com:che3vinci/automation.git",
+    "author": "jinbo.wang <che3vinci@gmail.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "prettier": "^2.6.2"
+    },
+    "engines": {
+        "node": ">=10",
+        "pnpm": ">=3"
+    }
 }
