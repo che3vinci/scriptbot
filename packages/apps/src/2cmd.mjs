@@ -1,19 +1,17 @@
 #!/usr/bin/env zx
-import { resolve } from 'path';
-import { getProjectDir, run } from '@auto-scripts/cli';
+import { run } from '@scriptbot/cli';
 
 run({
   async install() {
+    const map = {
+      git: 'gi',
+    };
     const { stdout } = await $`ls ${__dirname}`;
-    for (const app of stdout) {
-      const cmd = resolve(argv._[0] || '');
-
-      //FIXME:
-      const dest =
-        '/Users/chevinci/.nvm/versions/node/v16.13.1/bin/' +
-        cmd.match(/[^/]+$/)[0].replace(/\..*$/, '');
+    for (const app of stdout.split('\n').slice(0, -1)) {
+      const name = app.match(/[^/]+$/)[0].replace(/\..*$/, '');
+      const dest = `${__dirname}/../bin/${map[name] || name}`;
       await $`rm -rf ${dest}`;
-      await $`ln -s ${cmd} ${dest}`;
+      await $`ln -s ${__dirname}/${app} ${dest}`;
       await $`chmod a+x ${dest}`;
     }
   },

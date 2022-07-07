@@ -1,4 +1,4 @@
-import { run } from '@auto-scripts/cli';
+import { run } from '@scriptbot/cli';
 
 run({
     async build(){

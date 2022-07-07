@@ -1,5 +1,5 @@
 
-import { run } from '@auto-scripts/cli';
+import { run } from '@scriptbot/cli';
 import inquirer from 'inquirer';
 import { spinner } from 'zx/experimental';
 

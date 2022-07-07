@@ -1,4 +1,4 @@
-# @auto-scripts/cli
+# @scriptbot/cli
 
 ## 1.0.107
 

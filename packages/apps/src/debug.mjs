@@ -1,6 +1,6 @@
 #!/usr/bin/env zx
 import { $, fs, which } from 'zx';
-import { createProject, getProjectDir, Json, run, chromeApp } from '@auto-scripts/cli';
+import { createProject, getProjectDir, Json, run, chromeApp } from '@scriptbot/cli';
 import { assert } from 'console';
 
 const PORT = 9999;

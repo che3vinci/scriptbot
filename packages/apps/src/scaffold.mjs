@@ -1,6 +1,6 @@
 #!/usr/bin/env zx
 import { os, $, cd } from 'zx';
-import { run, createProject, Json, getNpx, getProjectDir } from '@auto-scripts/apps';
+import { run, createProject, Json, getNpx, getProjectDir } from '@scriptbot/apps';
 import path from 'path';
 const template = file => path.resolve(__dirname, `../templates/${file}`);
 

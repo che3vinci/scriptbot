@@ -1,5 +1,5 @@
 #!/usr/bin/env zx
-import { run } from '@auto-scripts/cli';
+import { run } from '@scriptbot/cli';
 import { cd, os } from 'zx';
 
 run({

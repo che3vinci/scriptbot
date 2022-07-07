@@ -1,11 +1,11 @@
-# `@auto-scripts/cli`
+# `@scriptbot/cli`
 
 > TODO: description
 
 ## Usage
 
 ```
-import cli from '@auto-scripts/cli';
+import cli from '@scriptbot/cli';
 
 
 ```

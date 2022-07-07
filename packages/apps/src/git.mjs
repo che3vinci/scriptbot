@@ -1,5 +1,5 @@
 #!/usr/bin/env zx
-import { exec, getProjectDir, run } from '@auto-scripts/cli';
+import { exec, getProjectDir, run } from '@scriptbot/cli';
 import { $, cd } from 'zx';
 
 const project = getProjectDir();

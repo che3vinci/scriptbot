@@ -1,5 +1,5 @@
 #!/usr/bin/env zx
-import { run, replaceTextInFile } from '@auto-scripts/cli';
+import { run, replaceTextInFile } from '@scriptbot/cli';
 import { $ } from 'zx';
 const template = file => path.resolve(__dirname, `../templates/${file}`);
 const viteTemplate = file => template(`react-vite/${file}/`);
