@@ -1,6 +1,12 @@
 #!/usr/bin/env zx
 import { os, $, cd } from 'zx';
-import { run, createProject, Json, getNpx, getProjectDir } from '@scriptbot/apps';
+import {
+  run,
+  createProject,
+  Json,
+  getNpx,
+  getProjectDir,
+} from '@scriptbot/cli';
 import path from 'path';
 const template = file => path.resolve(__dirname, `../templates/${file}`);
 
@@ -97,24 +103,29 @@ run({
     await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/.prettierrc`;
   },
   async storybook(options) {
-    const { demo = true, npm = 'pnpm' } = options;
+    const { projectName = 'storybook-test-1', npm = 'pnpm' } = options;
 
-    if (demo) {
+    if (projectName) {
       await this.createProject({
-        projectName: 'storybook-test-1',
+        projectName,
         type: 'viteTs',
         npm: npm,
         before: async () => {
           await $`echo 'shamefully-hoist=true' >> .npmrc`;
           await $`echo 'auto-install-peers=true' >> .npmrc`;
+          await $`echo '"strict-peer-dependencies=false"' >> .npmrc`;
         },
       });
     } else {
       await $`echo 'shamefully-hoist=true' >> .npmrc`;
       await $`echo 'auto-install-peers=true' >> .npmrc`;
+      // await $`echo '"strict-peer-dependencies=false"' >> .npmrc`;
     }
-    await $`${getNpx(npm)} storybook init`;
-    await $`${npm} storybook`;
+    const pkgs = ['@storybook/builder-vite', 'sb', 'storybook'];
+    await $`${npm} add ${pkgs} -D`;
+    await $`sb init -s --builder @storybook/builder-vite --type react`;
+    await $`pnpm install`;
+    await $`pnpm storybook`;
   },
   async husky(option) {
     const {
