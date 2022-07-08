@@ -159,4 +159,8 @@ async function run(option) {
   assert(argv._.length === 2, `provide a subcommand:${JSON.stringify(argv)}`);
   await option[argv._[1]].call(option, omit(argv, ["_"]));
 }
-export { Json, chromeApp, copyJsonField, createProject, exec, getNpx, getProjectDir, installIfNeeded, projects, replaceTextInFile, run };
+const getTemplateFile = (category) => (file) => {
+  const project = getProjectDir();
+  return `${project}/../templates/${category}/${file}`;
+};
+export { Json, chromeApp, copyJsonField, createProject, exec, getNpx, getProjectDir, getTemplateFile, installIfNeeded, projects, replaceTextInFile, run };

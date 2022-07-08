@@ -7,3 +7,4 @@ export * from './install';
 export * from './json';
 export * from './replace';
 export * from './run';
+export * from './templates';

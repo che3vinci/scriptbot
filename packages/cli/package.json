@@ -34,10 +34,9 @@
     },
     "homepage": "https://github.com/che3vinci/c3#readme",
     "dependencies": {
-        "@c3/utils": "^1.0.130",
         "@types/lodash": "^4.14.182",
         "lodash": "^4.17.21",
-        "zx": "^5.2.0"
+        "zx": "^7.0.7"
     },
     "lint-stage": {
         "*.{ts,tsx}": [
