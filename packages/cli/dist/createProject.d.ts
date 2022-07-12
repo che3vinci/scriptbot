@@ -12,5 +12,5 @@ interface IOption {
     npm?: 'npm' | 'pnpm' | 'yarn';
     before?: () => Promise<void>;
 }
-export declare const createProject: (option?: IOption) => Promise<void>;
+export declare const createProject: (option?: IOption) => Promise<string>;
 export {};

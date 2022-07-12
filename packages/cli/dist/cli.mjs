@@ -60,6 +60,7 @@ const createProject = async (option) => {
   before && await before();
   npm === "pnpm" && await $`echo 'auto-install-peers=true' >> .npmrc`;
   await $`${npm} install`;
+  return projectDir;
 };
 const input = (text, stdin) => {
   stdin.write(text);
@@ -159,8 +160,4 @@ async function run(option) {
   assert(argv._.length === 2, `provide a subcommand:${JSON.stringify(argv)}`);
   await option[argv._[1]].call(option, omit(argv, ["_"]));
 }
-const getTemplateFile = (category) => (file) => {
-  const project = getProjectDir();
-  return `${project}/../templates/${category}/${file}`;
-};
-export { Json, chromeApp, copyJsonField, createProject, exec, getNpx, getProjectDir, getTemplateFile, installIfNeeded, projects, replaceTextInFile, run };
+export { Json, chromeApp, copyJsonField, createProject, exec, getNpx, getProjectDir, installIfNeeded, projects, replaceTextInFile, run };

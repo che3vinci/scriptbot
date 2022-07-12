@@ -29,6 +29,7 @@ export class Json {
     if (isArray(data)) {
       data.push(...toArray(value));
     } else if (isPlainObject(data) && isPlainObject(value)) {
+      //@ts-ignore
       data = { ...data, ...value };
     } else {
       throw new Error('not supported type');

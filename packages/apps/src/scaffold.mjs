@@ -11,8 +11,9 @@ import path from 'path';
 const template = file => path.resolve(__dirname, `../templates/${file}`);
 
 run({
-  async createProject(para) {
-    await createProject(para);
+  async createProject(options) {
+    const project = await createProject(options);
+    await $`code ${project}`;
   },
   async vscode() {
     await $`cp ${template(
@@ -106,7 +107,7 @@ run({
     const { projectName = 'storybook-test-1', npm = 'pnpm' } = options;
 
     if (projectName) {
-      await this.createProject({
+      await createProject({
         projectName,
         type: 'viteTs',
         npm: npm,
@@ -121,9 +122,7 @@ run({
       await $`echo 'auto-install-peers=true' >> .npmrc`;
       // await $`echo '"strict-peer-dependencies=false"' >> .npmrc`;
     }
-    const pkgs = ['@storybook/builder-vite', 'sb', 'storybook'];
-    await $`${npm} add ${pkgs} -D`;
-    await $`sb init -s --builder @storybook/builder-vite --type react`;
+    await $`sb init -s `;
     await $`pnpm install`;
     await $`pnpm storybook`;
   },
@@ -136,7 +135,7 @@ run({
       eslint = false,
     } = option || {};
     if (projectName) {
-      await this.createProject({ projectName, type: 'bone' });
+      await createProject({ projectName, type: 'bone' });
       await $`git init`;
       await $`echo node_modules/ > .gitignore`;
       prettier && (await this.prettier());
@@ -195,7 +194,7 @@ run({
       pnpm: '>=3',
     });
     if (create) {
-      await this.createProject({ projectName: 'pnpm-test-2', type: 'bone' });
+      await createProject({ projectName: 'pnpm-test-2', type: 'bone' });
 
       if (monorepo) {
         await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/pnpm/pnpm-workspace.yaml`;
@@ -237,7 +236,7 @@ run({
   async playwright(option) {
     const { install, create, suportComponentTest = true } = option;
     if (create) {
-      await this.createProject({
+      await createProject({
         projectName: 'playwright-test-1',
         npm: 'npm',
       });
@@ -266,6 +265,7 @@ run({
     await cd('bridge_ui');
 
     await $`REACT_APP_CLUSTER=testnet  REACT_APP_COVALENT_API_KEY=ckey_b4c4f5e6010c434aad864430298 npm run start`;
+    //0xC4a6623e1D75EFDa12Cb42AADc3B05A50DcBd269
   },
   async test(option) {
     const { process, meta } = option;

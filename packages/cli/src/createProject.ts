@@ -4,7 +4,9 @@ import { getNpx } from './getNpx';
 type ProjectOption = Required<Omit<IOption, 'before'>>;
 export const projects = {
   a: async ({ projectName, npm }: ProjectOption) => {
-    await $`${getNpx(npm)} degit fabien-ml/react-ts-vite-template ${projectName}`;
+    await $`${getNpx(
+      npm
+    )} degit fabien-ml/react-ts-vite-template ${projectName}`;
   },
   viteTs: async ({ projectName, npm }: ProjectOption) => {
     await $`${npm} create vite ${projectName} --template react-ts`;
@@ -17,7 +19,9 @@ export const projects = {
     await $`${npm} add ${pkgs}`;
   },
   cra: async ({ projectName, npm }: ProjectOption) => {
-    await $`${getNpx(npm)} create-react-app ${projectName} --template typescript`;
+    await $`${getNpx(
+      npm
+    )} create-react-app ${projectName} --template typescript`;
   },
 };
 interface IOption {
@@ -46,4 +50,5 @@ export const createProject = async (option?: IOption) => {
   before && (await before());
   npm === 'pnpm' && (await $`echo 'auto-install-peers=true' >> .npmrc`);
   await $`${npm} install`;
+  return projectDir;
 };
