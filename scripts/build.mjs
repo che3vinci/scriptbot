@@ -1,7 +1,7 @@
 import { run } from '@scriptbot/cli';
 
 run({
-    async build(){
-        await $`pnpm --filter @automation/apps`;
-    }
-})
+  async build() {
+    await $`pnpm -r build`;
+  },
+});

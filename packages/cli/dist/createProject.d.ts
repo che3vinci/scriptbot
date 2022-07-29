@@ -4,6 +4,7 @@ export declare const projects: {
     viteTs: ({ projectName, npm }: ProjectOption) => Promise<void>;
     bone: ({ projectName, npm }: ProjectOption) => Promise<void>;
     cra: ({ projectName, npm }: ProjectOption) => Promise<void>;
+    egg: ({ projectName, npm }: ProjectOption) => Promise<void>;
 };
 interface IOption {
     projectName?: string;

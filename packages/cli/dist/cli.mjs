@@ -47,6 +47,12 @@ const projects = {
   },
   cra: async ({ projectName, npm }) => {
     await $`${getNpx(npm)} create-react-app ${projectName} --template typescript`;
+  },
+  egg: async ({ projectName, npm }) => {
+    await $`mkdir ${projectName}`;
+    cd(projectName);
+    await $`${npm} create egg --type=ts`;
+    await $`${npm} install `;
   }
 };
 const createProject = async (option) => {

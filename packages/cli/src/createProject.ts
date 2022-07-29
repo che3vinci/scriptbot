@@ -23,6 +23,13 @@ export const projects = {
       npm
     )} create-react-app ${projectName} --template typescript`;
   },
+  egg: async ({ projectName, npm }: ProjectOption) => {
+    await $`mkdir ${projectName}`;
+    cd(projectName);
+    await $`${npm} create egg --type=ts`; //npm init, pnpm  create
+    await $`${npm} install `;
+  },
+
 };
 interface IOption {
   projectName?: string;

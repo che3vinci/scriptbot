@@ -12,7 +12,22 @@ const template = file => path.resolve(__dirname, `../templates/${file}`);
 
 run({
   async createProject(options) {
-    const project = await createProject(options);
+    let project;
+    const { fullstack } = options;
+    if (fullstack) {
+      project = await createProject({ projectName: 'fullstack', type: 'bone' });
+      await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/pnpm/pnpm-workspace.yaml`;
+      await $`mkdir apps`;
+      cd('apps');
+      createProject({
+        type: 'viteTs',
+        projectName: 'client',
+        baseDir: process.cwd(),
+      });
+      await $`pnpm create adonis-ts-app server`;
+    } else {
+      project = await createProject(options);
+    }
     await $`code ${project}`;
   },
   async vscode() {
@@ -104,7 +119,7 @@ run({
     await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/.prettierrc`;
   },
   async storybook(options) {
-    const { projectName = 'storybook-test-1', npm = 'pnpm' } = options;
+    const { projectName, npm = 'pnpm' } = options;
 
     if (projectName) {
       await createProject({
@@ -114,14 +129,15 @@ run({
         before: async () => {
           await $`echo 'shamefully-hoist=true' >> .npmrc`;
           await $`echo 'auto-install-peers=true' >> .npmrc`;
-          await $`echo '"strict-peer-dependencies=false"' >> .npmrc`;
+          await $`echo 'strict-peer-dependencies=false' >> .npmrc`;
         },
       });
     } else {
       await $`echo 'shamefully-hoist=true' >> .npmrc`;
       await $`echo 'auto-install-peers=true' >> .npmrc`;
-      // await $`echo '"strict-peer-dependencies=false"' >> .npmrc`;
+      // await $`echo 'strict-peer-dependencies=false' >> .npmrc`;
     }
+    //most important step with pnpm
     await $`sb init -s `;
     await $`pnpm install`;
     await $`pnpm storybook`;
@@ -234,15 +250,10 @@ run({
     await $`lerna create @bullmind/cli --es-module -y`;
   },
   async playwright(option) {
-    const { install, create, suportComponentTest = true } = option;
-    if (create) {
-      await createProject({
-        projectName: 'playwright-test-1',
-        npm: 'npm',
-      });
-    }
+    const { install, suportComponentTest = true } = option;
+
     if (install) {
-      await $`npm add  @playwright/test`;
+      await $`pnpm create playwright`;
     }
     if (suportComponentTest) {
       await $`npm init playwright@latest -- --ct`;
@@ -267,9 +278,18 @@ run({
     await $`REACT_APP_CLUSTER=testnet  REACT_APP_COVALENT_API_KEY=ckey_b4c4f5e6010c434aad864430298 npm run start`;
     //0xC4a6623e1D75EFDa12Cb42AADc3B05A50DcBd269
   },
+
   async test(option) {
     const { process, meta } = option;
     process && console.log(process.env);
     meta && console.log(import.meta);
+  },
+  async addonis(option) {
+    const { db } = option;
+    if (db) {
+      await $`pnpm add @adonisjs/lucid`;
+      await $`node ace configure @adonisjs/lucid`;
+      //配置数据库连接
+    }
   },
 });
