@@ -1,3 +1,4 @@
+#!/usr/bin/env zx
 
 import { run } from '@scriptbot/cli';
 import inquirer from 'inquirer';

@@ -19,12 +19,15 @@ run({
       await $`wget -q https://raw.githubusercontent.com/che3vinci/react-template/master/templates/pnpm/pnpm-workspace.yaml`;
       await $`mkdir apps`;
       cd('apps');
+      //client
       createProject({
         type: 'viteTs',
         projectName: 'client',
         baseDir: process.cwd(),
       });
+      //server
       await $`pnpm create adonis-ts-app server`;
+     
     } else {
       project = await createProject(options);
     }

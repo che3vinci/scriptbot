@@ -1,3 +1,4 @@
+#!/usr/bin/env zx
 import { $, fs, which } from 'zx';
 import {
   createProject,
